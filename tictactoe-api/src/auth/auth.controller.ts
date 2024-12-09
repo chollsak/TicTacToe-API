@@ -15,6 +15,8 @@ export class AuthController {
 
     return {
       message: 'Login successful',
+      username : req.user.username,
+      userId: req.user.userId
     }
   }
 

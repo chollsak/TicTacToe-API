@@ -10,19 +10,38 @@ export class UserController {
 
   @Post('register')
   async create(@Body() registerDto: RegisterDto) {
-    return this.userService.create(registerDto);
+    const res = await this.userService.create(registerDto);
+    return {
+      message: 'User created',
+      user: res
+    };
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('find/:username')
-  async findByUsername(@Param('username') username: string) {
-    return this.userService.findByUsername(username);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('profile')
+  @Get('me')
   async getProfile(@Request() req) {
-    return req.user;
+    const user = req.user;
+    return user;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('all')
+  async findAll() {
+    const res = await this.userService.findAll();
+    return {
+      message: 'All users',
+      users: res
+    };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('history')
+  async getHistory(@Request() req) {
+    const res = await this.userService.viewHistory(req.user.username);
+    return {
+      message: 'User history',
+      history: res
+    };
   }
 
 }
