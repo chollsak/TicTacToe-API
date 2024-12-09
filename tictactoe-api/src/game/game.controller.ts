@@ -24,7 +24,7 @@ export class GameController {
     return this.gameService.makeMove(gameId, req.user.username, position);
   }
 
-  @Post('/playwithbot')//create game with bot
+  @Post('/playwithbot')
   async playWithBot(@Request() req) {
     return this.gameService.createGameWithBot(req.user.username);
   }
@@ -38,8 +38,6 @@ export class GameController {
       return this.gameService.makeMoveBot(gameId, req.user.username, moveData.position);
   }
   
-  
-
   @Delete(':id')
   async endGame(@Param('id') id: string, @Request() req) {
     const res = await this.gameService.endGame(id);

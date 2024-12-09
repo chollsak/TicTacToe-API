@@ -9,8 +9,8 @@ import { StatisticModule } from 'src/statistic/statistic.module';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: 'Game', schema: GameSchema }]),
-    forwardRef(() => UserModule), // Handle circular dependency
-    forwardRef(() => StatisticModule), // Handle circular dependency
+    forwardRef(() => UserModule), 
+    forwardRef(() => StatisticModule), 
   ],
   controllers: [GameController],
   providers: [GameService],

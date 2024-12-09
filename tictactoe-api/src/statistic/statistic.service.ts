@@ -18,7 +18,6 @@ export class StatisticService {
     private readonly userService: UserService
   ) {}
 
-  // Ensure statistics exist for a user (used programmatically)
   async ensureStatistics(userId: string): Promise<Statistic> {
     let statistic = await this.statisticModel.findOne({ user: userId }).exec();
 
@@ -36,7 +35,6 @@ export class StatisticService {
     return statistic;
   }
 
-  // Create a new statistic (manual creation via endpoint)
   async createStatistic(
     createStatisticDto: CreateStatisticDto,
   ): Promise<Statistic> {
@@ -72,18 +70,14 @@ async findAll(username: string) {
 
     const query = {
         $or: [
-            { user: isObjectId ? new Types.ObjectId(userId) : userId }, // Check for `ObjectId`
-            { user: userId.toString() } // Check for `string` version
+            { user: isObjectId ? new Types.ObjectId(userId) : userId },
+            { user: userId.toString() }
         ],
     };
 
     return this.statisticModel.find(query).exec();
 }
 
-
-  
-
-  // Update statistics programmatically after a game ends
   async updateStatistics(
     userId: string,
     updateData: Partial<UpdateStatisticDto>,
@@ -106,7 +100,6 @@ async findAll(username: string) {
       throw new BadRequestException('Invalid statistic field');
     }
   
-    // Ensure that the statistics exist for the user
     let statistic = await this.statisticModel.findOne({ user: userId }).exec();
   
     if (!statistic) {
@@ -119,13 +112,10 @@ async findAll(username: string) {
       });
     }
   
-    // Increment the specified field
     (statistic as StatisticDocument)[field]++;
     await (statistic as StatisticDocument).save();
   }
   
-
-  // Reset statistics for a user (optional utility)
   async resetStatistics(userId: string): Promise<Statistic> {
     const statistic = await this.statisticModel
       .findOneAndUpdate(
